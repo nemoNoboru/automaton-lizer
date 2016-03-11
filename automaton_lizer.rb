@@ -15,6 +15,7 @@ class Interface
       while (line = log.gets)
         @automaton.parse line
       end
+      puts "made #{@automaton.results.size} blocklogs"
     else
       puts 'file no exists.'
     end
@@ -25,7 +26,7 @@ class Interface
   end
 end
 
-i = Interface.new '0.0.1'
+i = Interface.new '0.1.2'
 if ARGV.size < 1
   i.help
 else

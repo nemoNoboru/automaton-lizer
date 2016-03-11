@@ -4,12 +4,12 @@ require './core/load_sentence.rb'
 # controller method, load sentences , num of cached loads and total,
 # activerecord and renderview time
 class Blocklog
-  attr_accessor :loadsentences, :path, :date, :cachenum, :timetotal, :timeRender
-  attr_accessor :timeRecord
-  @loadsentences = []
-  def initialize(path, date)
+  attr_accessor :loadsentences, :procesor, :path, :cachenum, :timetotal
+  attr_accessor :timeRecord, :timeRender
+
+  def initialize(path)
+    @loadsentences = []
     @path = path
-    @date = date
   end
 
   def add_load_sentence(elem, time)
