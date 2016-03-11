@@ -40,7 +40,7 @@ class Automaton
       @current_blocklog = Blocklog.new(match)
       @status = 1
     else
-      abort 1
+      abort
     end
   end
 
@@ -49,7 +49,7 @@ class Automaton
       @current_blocklog.procesor = match
       @status = 2
     else
-      abort 2
+      abort
     end
   end
 
@@ -58,7 +58,7 @@ class Automaton
       @current_blocklog.add_load_sentence(match1, match2)
       @status = 2
     else
-      abort 3
+      abort
     end
   end
 
@@ -68,7 +68,7 @@ class Automaton
       @current_blocklog.cachenum = @currentCache
       @status = 2
     else
-      abort 4
+      abort
     end
   end
 
@@ -81,7 +81,7 @@ class Automaton
       @current_blocklog = nil
       @status = 3
     else
-      abort 5
+      abort
     end
   end
 end
