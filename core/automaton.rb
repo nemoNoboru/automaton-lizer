@@ -76,7 +76,7 @@ class Automaton
     if @status == 2
       @current_blocklog.timetotal = match1
       @current_blocklog.timeRender = match2
-      @current_blocklog.timetotal = match3
+      @current_blocklog.timeRecord = match3
       @results << @current_blocklog
       @current_blocklog = nil
       @status = 3

@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
 
 require './core/automaton.rb'
+require './core/digester.rb'
 
 # interface class for Automaton-lizer
 class Interface
+  attr_reader :automaton
   def initialize(version)
     puts "Automaton-lizer ver #{version}"
     @automaton = Automaton.new
@@ -31,4 +33,7 @@ if ARGV.size < 1
   i.help
 else
   i.do_read ARGV[0]
+  digester = Digester.new i.automaton.results
+  puts "average response time : #{digester.average_response_time}ms"
+  puts "average response time tendency : #{digester.average_response_tendency}ms"
 end
