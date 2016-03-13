@@ -34,6 +34,5 @@ if ARGV.size < 1
 else
   i.do_read ARGV[0]
   digester = Digester.new i.automaton.results
-  puts "average response time : #{digester.average_response_time}ms"
-  puts "average response time tendency : #{digester.average_response_tendency}ms"
+  digester.default_process_and_print
 end
