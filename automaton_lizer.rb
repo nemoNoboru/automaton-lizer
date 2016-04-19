@@ -2,6 +2,7 @@
 
 require './core/automaton.rb'
 require './core/digester.rb'
+require './core/agent.rb'
 
 # interface class for Automaton-lizer
 class Interface
@@ -12,12 +13,18 @@ class Interface
   end
 
   def do_read(file)
+    puts 'Parsing log...'
     if File.exist? file
       log = File.new(file, 'r')
       while (line = log.gets)
         @automaton.parse line
       end
-      puts "made #{@automaton.results.size} blocklogs"
+      puts "Made #{@automaton.results.size} blocklogs"
+      puts 'Digesting blocklogs...'
+      @digester = Digester.new @automaton.results
+      results = @digester.process
+      puts "Made #{results.size} Results"
+      @agent = Agent.new results
     else
       puts 'file no exists.'
     end
@@ -33,6 +40,4 @@ if ARGV.size < 1
   i.help
 else
   i.do_read ARGV[0]
-  digester = Digester.new i.automaton.results
-  digester.default_process_and_print
 end

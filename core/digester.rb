@@ -2,7 +2,23 @@
 class Digester
   def initialize(blocklogs)
     @blocklogs = blocklogs
-    @bsize = @blocklogs.size # cache
+  end
+
+  def process
+    classify_blocklogs
+    results_array = []
+    @blocklog_hash.each_key do |key|
+      temp = {}
+      temp[:size] = @blocklog_hash[key].size
+      temp[:path] = key
+      temp[:response_time] = mean @blocklog_hash[key]
+      temp[:response_time_last] = average_response_last @blocklog_hash[key]
+      temp[:tendency] = average_response_tendency @blocklog_hash[key]
+      temp[:certanity] = (cuadratic_error @blocklog_hash[key]) / temp[:response_time]
+      temp[:loads] = mean_load @blocklog_hash[key]
+      results_array << temp
+    end
+    results_array
   end
 
   def classify_blocklogs
@@ -16,28 +32,12 @@ class Digester
     @blocklog_hash.size
   end
 
-  def default_process_and_print
-    puts 'Classifying....'
-    puts "clasified. found #{classify_blocklogs} diferent paths"
-    @blocklog_hash.each_key do |key|
-      puts "working with #{@blocklog_hash[key].size} Blocklogs"
-      buff = average_response_time @blocklog_hash[key]
-      puts "Average response time for /#{key} : #{buff}ms"
-      buff = average_response_tendency @blocklog_hash[key]
-      puts "Average response time tendency for /#{key} : #{buff}"
-      buff = average_response_last @blocklog_hash[key]
-      puts "Average response time of last requests /#{key} : #{buff}"
-      puts "Grade of certainty #{(cuadratic_error(@blocklog_hash[key]) / mean(@blocklog_hash[key]))}%"
-      puts
-    end
-  end
-
-  def average_response_time(blocklogs)
-    buff = 0
+  def mean_load(blocklogs)
+    sum = 0
     blocklogs.each do |blocklog|
-      buff += blocklog.timetotal.to_i
+      sum += blocklog.loadsentences.size
     end
-    buff / blocklogs.size
+    sum / blocklogs.size
   end
 
   def mean(blocklogs)
@@ -58,7 +58,7 @@ class Digester
     sum / counter
   end
 
-  def average_response_tendency(blocklogs)
+  def average_response_tendency(blocklogs) # lineal regresion
     numerator = 0.0
     denumerator = 0.0
     counter = 0.0
@@ -87,6 +87,6 @@ class Digester
     (1..split).each do |i|
       buff += blocklogs[-i].timetotal.to_i
     end
-    "#{buff / split}ms"
+    buff / split
   end
 end

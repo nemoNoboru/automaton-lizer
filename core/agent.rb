@@ -41,7 +41,7 @@ class Agent
     status = 'NO DATA'
     if response[:tendency] < -0.5
       status = 'Optimized'.blue
-    elsif response[:tendency] < 0.2
+    elsif response[:tendency] < 0.3
       status = 'Healthy'.green
     elsif response[:tendency] > 0.3
       status = 'Unhealthy'.red
